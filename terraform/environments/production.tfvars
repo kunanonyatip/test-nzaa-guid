@@ -1,0 +1,5 @@
+project_id        = "em-identity-graph"
+ga4_project_id    = "em-sandbox-455802"
+environment       = "prod"
+ga4_dataset       = "analytics_XXXXXXXXX"
+service_account_email = "guid-service@your-project-id.iam.gserviceaccount.com"

@@ -1,0 +1,32 @@
+[
+  {
+    "name": "id",
+    "type": "STRING",
+    "mode": "REQUIRED",
+    "description": "Unique row identifier, generated using GENERATE_UUID()"
+  },
+  {
+    "name": "hashed_email",
+    "type": "STRING",
+    "mode": "REQUIRED",
+    "description": "Hashed email from form submission"
+  },
+  {
+    "name": "ga_id",
+    "type": "STRING",
+    "mode": "REQUIRED",
+    "description": "GA4 client_id (user_pseudo_id)"
+  },
+  {
+    "name": "created_date",
+    "type": "DATETIME",
+    "mode": "REQUIRED",
+    "description": "First time identifiers were linked"
+  },
+  {
+    "name": "updated_date",
+    "type": "DATETIME",
+    "mode": "NULLABLE",
+    "description": "Last time the linkage was updated"
+  }
+]

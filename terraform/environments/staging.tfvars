@@ -1,0 +1,5 @@
+project_id        = "em-identity-graph" 
+ga4_project_id    = "em-sandbox-455802"
+environment       = "staging"
+ga4_dataset       = "ga4_test"
+service_account_email = "guid-service-account@em-identity-graph.iam.gserviceaccount.com"

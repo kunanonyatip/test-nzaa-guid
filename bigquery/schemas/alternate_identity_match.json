@@ -1,0 +1,26 @@
+[
+  {
+    "name": "hashed_email",
+    "type": "STRING",
+    "mode": "REQUIRED",
+    "description": "Hashed email from form submission"
+  },
+  {
+    "name": "alternate_id",
+    "type": "STRING",
+    "mode": "REQUIRED",
+    "description": "Platform identifier value"
+  },
+  {
+    "name": "alternate_id_type",
+    "type": "STRING",
+    "mode": "REQUIRED",
+    "description": "Platform name (e.g., fb_id, tiktok_id)"
+  },
+  {
+    "name": "updated_date",
+    "type": "DATETIME",
+    "mode": "REQUIRED",
+    "description": "Most recent update timestamp"
+  }
+]
