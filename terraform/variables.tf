@@ -1,17 +1,19 @@
 variable "project_id" {
   description = "Identity Graph GCP project ID"
   type        = string
+  default     = "em-identity-graph"
 }
 
 variable "ga4_project_id" {
   description = "GCP project ID containing GA4 data"
   type        = string
+  default     = "em-sandbox-455802"
 }
 
 variable "region" {
   description = "GCP region"
   type        = string
-  default     = "us-central1"
+  default     = "australia-southeast2"
 }
 
 variable "environment" {
@@ -28,3 +30,5 @@ variable "service_account_email" {
   description = "Service account email"
   type        = string
 }
+
+

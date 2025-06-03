@@ -11,8 +11,9 @@ resource "google_bigquery_dataset" "identity_resolution" {
     role          = "OWNER"
     user_by_email = var.service_account_email
   }
-   # Current user access (whoever runs Terraform)
-    access {
+
+  # Current user access (whoever runs Terraform)
+  access {
     role          = "OWNER"
     user_by_email = data.google_client_openid_userinfo.me.email
   }

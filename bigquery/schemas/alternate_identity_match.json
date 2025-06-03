@@ -8,7 +8,7 @@
   {
     "name": "alternate_id",
     "type": "STRING",
-    "mode": "REQUIRED",
+    "mode": "REPEATED",
     "description": "Platform identifier value"
   },
   {
