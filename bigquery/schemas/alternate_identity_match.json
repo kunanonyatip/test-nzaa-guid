@@ -20,7 +20,7 @@
   {
     "name": "updated_date",
     "type": "DATETIME",
-    "mode": "REQUIRED",
+    "mode": "REPEATED",
     "description": "Most recent update timestamp"
   }
 ]

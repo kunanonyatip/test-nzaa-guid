@@ -7,7 +7,7 @@ BEGIN
     SET latest_update_date = (
       SELECT IFNULL(
         FORMAT_DATETIME("%Y%m%d", MAX(updated_date[OFFSET(ARRAY_LENGTH(updated_date) - 1)])),
-        "20240101" 
+        "20250602"  -- Default to a past date if no records exist
       )
       FROM `${project_id}.${dataset_id}.identity_match`
     );
@@ -69,7 +69,7 @@ BEGIN
     WHERE _TABLE_SUFFIX > latest_update_date
       AND email.key = 'guid_email'
       AND alt.key IN ('guid_floodlight_id', 'guid_gads_id', 'guid_floodlight_gads_id', 
-                      'guid_fb_id', 'guid_tiktok_id', 'guid_reddit_id')
+                      'guid_fb_id', 'guid_tiktok_id', 'guid_reddit_id','guid_rws_id')
       AND email.value.string_value IS NOT NULL
       AND alt.value.string_value IS NOT NULL
     GROUP BY 1, 2, 3
@@ -96,7 +96,7 @@ BEGIN
   WHERE _TABLE_SUFFIX > latest_update_date
     AND email.key = 'guid_email'
     AND alt.key IN ('guid_floodlight_id', 'guid_gads_id', 'guid_floodlight_gads_id',
-                    'guid_fb_id', 'guid_tiktok_id', 'guid_reddit_id')
+                    'guid_fb_id', 'guid_tiktok_id', 'guid_reddit_id','guid_rws_id')
     AND email.value.string_value IS NOT NULL
     AND alt.value.string_value IS NOT NULL
     AND aim.hashed_email IS NULL

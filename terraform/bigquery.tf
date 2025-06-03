@@ -1,6 +1,3 @@
-# Get the current user's email
-data "google_client_openid_userinfo" "me" {}
-
 # Create BigQuery dataset
 resource "google_bigquery_dataset" "identity_resolution" {
   dataset_id                  = "identity_resolution_${var.environment}"
