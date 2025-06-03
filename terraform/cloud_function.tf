@@ -1,8 +1,10 @@
- Create Cloud Storage bucket for function source
+# Create Cloud Storage bucket for function source
 resource "google_storage_bucket" "function_bucket" {
-  name     = "${var.project_id}-gcf-source-${random_string.bucket_suffix.result}"
-  location = var.region
+  name          = "${var.project_id}-gcf-source-${random_string.bucket_suffix.result}"
+  location      = var.region
   force_destroy = true
+  
+  uniform_bucket_level_access = true
 }
 
 # Random string for bucket name uniqueness
@@ -30,31 +32,51 @@ data "archive_file" "function_source" {
 
 # Upload function source to bucket
 resource "google_storage_bucket_object" "function_zip" {
-  name   = "identity-match-${var.environment}.zip"
+  name   = "identity-match-${var.environment}-${data.archive_file.function_source.output_base64sha256}.zip"
   bucket = google_storage_bucket.function_bucket.name
   source = data.archive_file.function_source.output_path
 }
 
-# Create Cloud Function
-resource "google_cloudfunctions_function" "identity_match" {
-  name                  = "identity-match-${var.environment}"
-  runtime               = "python39" 
-  available_memory_mb   = 512
-  timeout               = 540
-  entry_point          = "identity_match"
-  service_account_email = var.service_account_email
-  
-  source_archive_bucket = google_storage_bucket.function_bucket.name
-  source_archive_object = google_storage_bucket_object.function_zip.name
-  
+# Create 2nd Gen Cloud Function
+resource "google_cloudfunctions2_function" "identity_match" {
+  name        = "identity-match-${var.environment}"
+  location    = var.region
+  description = "Process GA4 export events for identity resolution"
+
+  build_config {
+    runtime     = "python311"  # Updated runtime
+    entry_point = "identity_match"
+    source {
+      storage_source {
+        bucket = google_storage_bucket.function_bucket.name
+        object = google_storage_bucket_object.function_zip.name
+      }
+    }
+  }
+
+  service_config {
+    max_instance_count    = 100
+    min_instance_count    = 0
+    available_memory      = "512M"
+    timeout_seconds       = 540
+    service_account_email = var.service_account_email
+    
+    environment_variables = {
+      PROJECT_ID = var.project_id
+      DATASET_ID = google_bigquery_dataset.identity_resolution.dataset_id
+      REGION     = var.region
+    }
+  }
+
   event_trigger {
-    event_type = "google.pubsub.topic.publish"
-    resource   = google_pubsub_topic.ga4_export.id
+    event_type            = "google.cloud.pubsub.topic.v1.messagePublished"
+    pubsub_topic          = google_pubsub_topic.ga4_export.id
+    service_account_email = var.service_account_email
+    retry_policy          = "RETRY_POLICY_RETRY"
   }
-  
-  environment_variables = {
-    PROJECT_ID = var.project_id
-    DATASET_ID = google_bigquery_dataset.identity_resolution.dataset_id
-    REGION     = var.region
-  }
+}
+
+# Output the function URI
+output "function_uri" {
+  value = google_cloudfunctions2_function.identity_match.service_config[0].uri
 }
