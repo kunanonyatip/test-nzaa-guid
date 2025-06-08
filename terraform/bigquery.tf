@@ -1,8 +1,8 @@
 # Create BigQuery dataset
 resource "google_bigquery_dataset" "identity_resolution" {
   dataset_id                  = "identity_resolution_${var.environment}"
-  location                    = var.region
-  delete_contents_on_destroy  = false
+  location                    = "australia-southeast1"
+  delete_contents_on_destroy  = true
   
   access {
     role          = "OWNER"

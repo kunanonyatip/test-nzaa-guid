@@ -44,7 +44,7 @@ resource "google_cloudfunctions2_function" "identity_match" {
   description = "Process GA4 export events for identity resolution"
 
   build_config {
-    runtime     = "python311"  # Updated runtime
+    runtime     = "python311" 
     entry_point = "identity_match"
     source {
       storage_source {

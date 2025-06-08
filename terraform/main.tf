@@ -18,7 +18,7 @@ terraform {
   
   # Backend configuration
   backend "gcs" {
-    bucket = "em-identity-graph-terraform-state"
+    bucket = "guid-nzaa-terraform-state"
     prefix = "identity-resolution"
   }
 }

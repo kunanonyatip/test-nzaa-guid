@@ -1,13 +1,13 @@
 variable "project_id" {
   description = "Identity Graph GCP project ID"
   type        = string
-  default     = "em-identity-graph"
+  default     = "nzaa-mkt-guid"
 }
 
 variable "ga4_project_id" {
   description = "GCP project ID containing GA4 data"
   type        = string
-  default     = "em-sandbox-455802"
+  default     = "nzaa-datasets"
 }
 
 variable "region" {
