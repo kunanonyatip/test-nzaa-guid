@@ -1,0 +1,86 @@
+[
+  {
+    "event_date": "20250606",
+    "event_timestamp": 1749225600000000,
+    "event_name": "page_view",
+    "user_pseudo_id": "1234567890.0987654321",
+    "user_properties": [
+      {
+        "key": "guid_email",
+        "value": {
+          "string_value": "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
+          "int_value": "_NULL_",
+          "float_value": "_CAST(NULL AS FLOAT64)_",
+          "double_value": "_CAST(NULL AS FLOAT64)_",
+          "set_timestamp_micros": 1749225600000000
+        }
+      },
+      {
+        "key": "guid_fb_id",
+        "value": {
+          "string_value": "FB_1234567890",
+          "int_value": "_NULL_",
+          "float_value": "_CAST(NULL AS FLOAT64)_",
+          "double_value": "_CAST(NULL AS FLOAT64)_",
+          "set_timestamp_micros": 1749225600000000
+        }
+      },
+      {
+        "key": "guid_tiktok_id", 
+        "value": {
+          "string_value": "TT_ABCDEF123456",
+          "int_value": "_NULL_",
+          "float_value": "_CAST(NULL AS FLOAT64)_",
+          "double_value": "_CAST(NULL AS FLOAT64)_",
+          "set_timestamp_micros": 1749225600000000
+        }
+      }
+    ]
+  },
+  {
+    "event_date": "20250606",
+    "event_timestamp": 1749225700000000,
+    "event_name": "form_submit",
+    "user_pseudo_id": "2222222222.1111111111",
+    "user_properties": [
+      {
+        "key": "guid_email",
+        "value": {
+          "string_value": "b493d48364afe44d11c0165cf470a4164d1e2609911ef998be868d46ade3de4e",
+          "int_value": "_NULL_",
+          "float_value": "_CAST(NULL AS FLOAT64)_",
+          "double_value": "_CAST(NULL AS FLOAT64)_",
+          "set_timestamp_micros": 1749225700000000
+        }
+      }
+    ]
+  },
+  {
+    "event_date": "20250606",
+    "event_timestamp": 1749225800000000,
+    "event_name": "page_view",
+    "user_pseudo_id": "3333333333.2222222222",
+    "user_properties": [
+      {
+        "key": "guid_email",
+        "value": {
+          "string_value": "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
+          "int_value": "_NULL_",
+          "float_value": "_CAST(NULL AS FLOAT64)_",
+          "double_value": "_CAST(NULL AS FLOAT64)_",
+          "set_timestamp_micros": 1749225800000000
+        }
+      },
+      {
+        "key": "guid_reddit_id",
+        "value": {
+          "string_value": "RD_TEST_USER_123",
+          "int_value": "_NULL_",
+          "float_value": "_CAST(NULL AS FLOAT64)_",
+          "double_value": "_CAST(NULL AS FLOAT64)_",
+          "set_timestamp_micros": 1749225800000000
+        }
+      }
+    ]
+  }
+]

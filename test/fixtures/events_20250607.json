@@ -1,0 +1,58 @@
+[
+  {
+    "event_date": "20250607",
+    "event_timestamp": 1749312000000000,
+    "event_name": "purchase",
+    "user_pseudo_id": "1234567890.0987654321",
+    "user_properties": [
+      {
+        "key": "guid_email",
+        "value": {
+          "string_value": "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
+          "int_value": "_NULL_",
+          "float_value": "_CAST(NULL AS FLOAT64)_",
+          "double_value": "_CAST(NULL AS FLOAT64)_",
+          "set_timestamp_micros": 1749312000000000
+        }
+      },
+      {
+        "key": "guid_gads_id",
+        "value": {
+          "string_value": "GA_9876543210",
+          "int_value": "_NULL_",
+          "float_value": "_CAST(NULL AS FLOAT64)_",
+          "double_value": "_CAST(NULL AS FLOAT64)_",
+          "set_timestamp_micros": 1749312000000000
+        }
+      }
+    ]
+  },
+  {
+    "event_date": "20250607",
+    "event_timestamp": 1749312100000000,
+    "event_name": "page_view",
+    "user_pseudo_id": "4444444444.3333333333",
+    "user_properties": [
+      {
+        "key": "guid_email",
+        "value": {
+          "string_value": "c6ba91b90d922ef159e69e70a15f7f367aea416f7a4befd396439fe24b3a5f5e",
+          "int_value": "_NULL_",
+          "float_value": "_CAST(NULL AS FLOAT64)_",
+          "double_value": "_CAST(NULL AS FLOAT64)_",
+          "set_timestamp_micros": 1749312100000000
+        }
+      },
+      {
+        "key": "guid_rws_id",
+        "value": {
+          "string_value": "RWS_USER_456",
+          "int_value": "_NULL_",
+          "float_value": "_CAST(NULL AS FLOAT64)_",
+          "double_value": "_CAST(NULL AS FLOAT64)_",
+          "set_timestamp_micros": 1749312100000000
+        }
+      }
+    ]
+  }
+]

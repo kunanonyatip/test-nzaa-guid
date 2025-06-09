@@ -1,0 +1,16 @@
+[
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440001",
+    "hashed_email": "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
+    "ga_id": "1234567890.0987654321",
+    "created_date": "_DATETIME(\"2025-06-05 10:00:00\")_",
+    "updated_date": ["_DATETIME(\"2025-06-05 10:00:00\")_"]  
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440002",
+    "hashed_email": "b493d48364afe44d11c0165cf470a4164d1e2609911ef998be868d46ade3de4e",
+    "ga_id": "2222222222.1111111111",
+    "created_date": "_DATETIME(\"2025-06-05 10:05:00\")_",
+    "updated_date": ["_DATETIME(\"2025-06-05 10:05:00\")_"]  
+  }
+]
