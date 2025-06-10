@@ -41,11 +41,6 @@ resource "google_bigquery_routine" "update_identity_match" {
   routine_type = "PROCEDURE"
   language     = "SQL"
   
-  arguments {
-    name      = "latest_update_date"
-    data_type = jsonencode({typeKind = "STRING"})
-  }
-  
   definition_body = templatefile("${path.module}/../bigquery/procedures/update_identity_match.sql", {
     project_id       = var.project_id
     dataset_id       = google_bigquery_dataset.identity_resolution.dataset_id

@@ -16,7 +16,7 @@ check-python:
 # Install test dependencies
 install-deps: check-python
 	@echo "Installing test dependencies..."
-	$(PIP) install google-cloud-bigquery pandas pyarrow db-dtypes python-dotenv pytest
+	$(PIP) install google-cloud-bigquery pandas pyarrow db-dtypes python-dotenv pytest google-cloud-bigquery-storage
 
 # Setup test environment
 setup-test: check-python install-deps
@@ -29,7 +29,12 @@ test: check-python test-unit test-bigquery test-terraform
 
 # Run unit tests
 test-unit: check-python
-	$(PYTHON) -m pytest cloud_functions/*/test_*.py -v || true
+	@if find cloud_functions -name "test_*.py" 2>/dev/null | grep -q .; then \
+		echo "Running cloud function tests..."; \
+		$(PYTHON) -m pytest cloud_functions/*/test_*.py -v; \
+	else \
+		echo "No cloud function tests found (skipping)"; \
+	fi
 
 # Run BigQuery procedure tests
 test-bigquery: check-python
