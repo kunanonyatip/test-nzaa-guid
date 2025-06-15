@@ -19,12 +19,6 @@ class BiqQueryTest:
         self.client = bigquery.Client(project=self.project)
         self.tables = {}  # dictionary to keep track of tables created for this test
 
-        # create the test dataset if doesn't exist with specific location
-        dataset_id = f"{self.project}.{self.dataset}"
-        dataset = bigquery.Dataset(dataset_id)
-        dataset.location = "australia-southeast1"  # Specify the location
-        dataset.description = "Test dataset for identity resolution testing"
-
         # create the test dataset if doesn't exist
         self.client.create_dataset(self.dataset, exists_ok=True)
 
@@ -50,9 +44,6 @@ class BiqQueryTest:
         if use_root_path:
             # Use path directly from project root
             schema_path = f'{ROOT_DIR}/{path}/{name}_schema.json'
-        else:
-            # Legacy behavior - path relative to src/{module}/
-            schema_path = f'{ROOT_DIR}/src/{module}/{path}/{name}_schema.json'
             
         # Check if schema exists, if not try without _schema suffix
         if not os.path.exists(schema_path):
@@ -132,14 +123,10 @@ class BiqQueryTest:
         for name in self.tables:
             sql = sql.replace(f'.{self.tables[name]["key"]}', f'.{self.tables[name]["table_name"]}')
 
-        # prep args - fixed to handle empty args list
-        if args:
-            args_sql = '; '.join(list(map(lambda arg: f'DECLARE {arg["name"]} {arg["type"]} DEFAULT {arg["value"]}', args)))
-            final_sql = f'{args_sql}; {sql}'
-        else:
-            final_sql = sql
-            
-        job = self.client.query(final_sql)
+        # prep args
+        args = '; '.join(list(map(lambda arg: f'DECLARE {arg["name"]} {arg["type"]} DEFAULT {arg["value"]}', args)))
+        x = f'{args}; {sql}'
+        job = self.client.query(x)
         results = job.result()
         return results
 
