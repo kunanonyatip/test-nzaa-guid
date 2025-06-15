@@ -19,6 +19,12 @@ class BiqQueryTest:
         self.client = bigquery.Client(project=self.project)
         self.tables = {}  # dictionary to keep track of tables created for this test
 
+        # create the test dataset if doesn't exist with specific location
+        dataset_id = f"{self.project}.{self.dataset}"
+        dataset = bigquery.Dataset(dataset_id)
+        dataset.location = "australia-southeast1"  # Specify the location
+        dataset.description = "Test dataset for identity resolution testing"
+
         # create the test dataset if doesn't exist
         self.client.create_dataset(self.dataset, exists_ok=True)
 

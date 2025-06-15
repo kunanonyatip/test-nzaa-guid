@@ -25,10 +25,10 @@ class TestIdentityResolution:
     def test_config(self):
         """Test configuration."""
         return {
-            'project_id': os.environ.get('PROJECT_ID', 'em-identity-graph'),
+            'project_id': os.environ.get('PROJECT_ID', 'nzaa-mkt-guid'),
             'dataset_id': os.environ.get('DATASET_ID', 'identity_resolution_staging'),
-            'ga4_project': os.environ.get('GA4_PROJECT', 'em-sandbox-455802'),
-            'ga4_dataset': os.environ.get('GA4_DATASET', 'analytics_XXXXXXXXX'),
+            'ga4_project': os.environ.get('GA4_PROJECT', 'nzaa-mkt-guid'),
+            'ga4_dataset': os.environ.get('GA4_DATASET', 'analytics_291449711'),
             'topic_name': os.environ.get('TOPIC_NAME', 'ga4-export-identity-resolution-staging'),
             'function_name': os.environ.get('FUNCTION_NAME', 'identity-match-staging')
         }
