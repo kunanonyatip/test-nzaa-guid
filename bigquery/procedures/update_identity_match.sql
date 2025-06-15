@@ -4,7 +4,7 @@ BEGIN
   SET last_update_date = (
     SELECT IFNULL(
       FORMAT_DATETIME("%Y%m%d", MAX(updated_date[OFFSET(ARRAY_LENGTH(updated_date) - 1)])),
-      "20250603"
+      "20250615"
     )
     FROM `${project_id}.${dataset_id}.identity_match`
   );

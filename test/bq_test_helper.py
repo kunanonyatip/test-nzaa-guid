@@ -16,11 +16,20 @@ class BiqQueryTest:
     def __init__(self, project=None, dataset=None):
         self.project = os.getenv('TEST_PROJECT_ID') or project
         self.dataset = os.getenv('TEST_DATASET') or dataset
+        self.location = "australia-southeast1"  # Set default location
         self.client = bigquery.Client(project=self.project)
         self.tables = {}  # dictionary to keep track of tables created for this test
 
+        # create the test dataset if doesn't exist with specific location
+        dataset_id = f"{self.project}.{self.dataset}"
+        dataset = bigquery.Dataset(dataset_id)
+        
+        # Use australia-southeast1 to match production location
+        dataset.location = self.location
+        dataset.description = "Test dataset for identity resolution testing"
+
         # create the test dataset if doesn't exist
-        self.client.create_dataset(self.dataset, exists_ok=True)
+        self.client.create_dataset(dataset, exists_ok=True)
 
         # clean up old test tables
         old_tables = self.client.list_tables(self.dataset)
@@ -44,6 +53,9 @@ class BiqQueryTest:
         if use_root_path:
             # Use path directly from project root
             schema_path = f'{ROOT_DIR}/{path}/{name}_schema.json'
+        else:
+            # Legacy behavior - path relative to src/{module}/
+            schema_path = f'{ROOT_DIR}/src/{module}/{path}/{name}_schema.json'
             
         # Check if schema exists, if not try without _schema suffix
         if not os.path.exists(schema_path):
@@ -70,7 +82,7 @@ class BiqQueryTest:
             })
             insert_sql = re.sub(r",\)", ")", insert_sql)  # strip out comma's after arrays
             insert_sql = re.sub(r"\\'", "'", insert_sql)  # remove escaped commas
-            job = self.client.query(insert_sql)
+            job = self.client.query(insert_sql, location=self.location)
             results = job.result()
             return results
         else:
@@ -106,38 +118,70 @@ class BiqQueryTest:
             
         with open(template_path, 'r') as f:
             template = Template(f.read())
-            return template.safe_substitute({
+            result = template.safe_substitute({
                 'project_id': self.project,
                 'dataset_id': self.dataset
             } | overrides)
+            
+            # Debug: Check if template substitution worked
+            if '${' in result:
+                print(f"WARNING: Unsubstituted template variables found in {filename}")
+                print(f"Template variables: {[match for match in re.findall(r'\$\{(\w+)\}', result)]}")
+            
+            return result
 
     # start test empties the test tables
     def start_test(self):
         for table in self.tables:
-            job = self.client.query(f'TRUNCATE TABLE `{self.tables[table]["table_ref"]}`')
+            job = self.client.query(
+                f'TRUNCATE TABLE `{self.tables[table]["table_ref"]}`',
+                location=self.location
+            )
             job.result()
 
     # runs a bigquery sql query
     def query(self, args, sql):
-        # adjust sql with test table names
-        for name in self.tables:
-            sql = sql.replace(f'.{self.tables[name]["key"]}', f'.{self.tables[name]["table_name"]}')
+        # Skip table name replacement for CALL statements
+        if not sql.strip().upper().startswith('CALL'):
+            # adjust sql with test table names
+            for name in self.tables:
+                sql = sql.replace(f'.{self.tables[name]["key"]}', f'.{self.tables[name]["table_name"]}')
 
-        # prep args
-        args = '; '.join(list(map(lambda arg: f'DECLARE {arg["name"]} {arg["type"]} DEFAULT {arg["value"]}', args)))
-        x = f'{args}; {sql}'
-        job = self.client.query(x)
+        # prep args - fixed to handle empty args list
+        if args:
+            args_sql = '; '.join(list(map(lambda arg: f'DECLARE {arg["name"]} {arg["type"]} DEFAULT {arg["value"]}', args)))
+            final_sql = f'{args_sql}; {sql}'
+        else:
+            final_sql = sql
+        
+        # Remove any leading semicolons or whitespace
+        final_sql = final_sql.strip()
+        if final_sql.startswith(';'):
+            final_sql = final_sql[1:].strip()
+            
+        # Configure job with location
+        job_config = bigquery.QueryJobConfig()
+        job_config.use_query_cache = False
+        
+        job = self.client.query(final_sql, location=self.location, job_config=job_config)
         results = job.result()
         return results
 
     # return data from named table
     def get_dataframe(self, name):
-        job = self.client.query(f'SELECT * FROM `{self.project}.{self.dataset}.{self.tables[name]["table_name"]}`;')
-        return job.to_dataframe()
+        job = self.client.query(
+            f'SELECT * FROM `{self.project}.{self.dataset}.{self.tables[name]["table_name"]}`;',
+            location=self.location
+        )
+        # Disable BigQuery Storage API to avoid permission issues in tests
+        return job.to_dataframe(create_bqstorage_client=False)
 
     # return data from named table
     def get_table_data(self, name):
-        job = self.client.query(f'SELECT * FROM `{self.project}.{self.dataset}.{self.tables[name]["table_name"]}`;')
+        job = self.client.query(
+            f'SELECT * FROM `{self.project}.{self.dataset}.{self.tables[name]["table_name"]}`;',
+            location=self.location
+        )
         return list(job.result())
 
     # get a column from table data
