@@ -4,7 +4,7 @@
     "event_timestamp": 1749225600000000,
     "event_name": "page_view",
     "user_pseudo_id": "1234567890.0987654321",
-    "user_properties": [
+    "event_params": [
       {
         "key": "guid_email",
         "value": {
@@ -35,14 +35,15 @@
           "set_timestamp_micros": 1749225600000000
         }
       }
-    ]
+    ],
+    "user_properties": []
   },
   {
     "event_date": "20250606",
     "event_timestamp": 1749225700000000,
     "event_name": "form_submit",
     "user_pseudo_id": "2222222222.1111111111",
-    "user_properties": [
+    "event_params": [
       {
         "key": "guid_email",
         "value": {
@@ -53,14 +54,15 @@
           "set_timestamp_micros": 1749225700000000
         }
       }
-    ]
+    ],
+    "user_properties": []
   },
   {
     "event_date": "20250606",
     "event_timestamp": 1749225800000000,
     "event_name": "page_view",
     "user_pseudo_id": "3333333333.2222222222",
-    "user_properties": [
+    "event_params": [
       {
         "key": "guid_email",
         "value": {
@@ -81,6 +83,7 @@
           "set_timestamp_micros": 1749225800000000
         }
       }
-    ]
+    ],
+    "user_properties": []
   }
 ]

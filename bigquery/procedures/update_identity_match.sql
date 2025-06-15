@@ -4,7 +4,7 @@ BEGIN
   SET last_update_date = (
     SELECT IFNULL(
       FORMAT_DATETIME("%Y%m%d", MAX(updated_date[OFFSET(ARRAY_LENGTH(updated_date) - 1)])),
-      "20250615"
+      "20250616"
     )
     FROM `${project_id}.${dataset_id}.identity_match`
   );
@@ -18,7 +18,7 @@ BEGIN
       user_pseudo_id as ga_id,
       MAX(event_date) as latest_date
     FROM `${ga4_project}.${ga4_dataset}.events_*`,
-    UNNEST(user_properties) email
+    UNNEST(event_params) email
     WHERE _TABLE_SUFFIX > last_update_date
       AND email.key = 'guid_email'
       AND email.value.string_value IS NOT NULL
@@ -43,7 +43,7 @@ BEGIN
     ARRAY<DATETIME>[PARSE_DATETIME("%Y%m%d", MAX(event_date))] AS updated_date
   FROM
     `${ga4_project}.${ga4_dataset}.events_*`,
-    UNNEST(user_properties) email
+    UNNEST(event_params) email
   LEFT JOIN
     `${project_id}.${dataset_id}.identity_match` AS identity_match
   ON
@@ -75,8 +75,8 @@ BEGIN
         REPLACE(alt.key, 'guid_', '') AS alternate_id_type,
         event_date as latest_date
       FROM `${ga4_project}.${ga4_dataset}.events_*`,
-        UNNEST(user_properties) email,
-        UNNEST(user_properties) alt
+        UNNEST(event_params) email,
+        UNNEST(event_params) alt
       WHERE _TABLE_SUFFIX > last_update_date
         AND email.key = 'guid_email'
         AND alt.key IN ('guid_floodlight_id', 'guid_gads_id', 'guid_floodlight_gads_id', 
@@ -103,8 +103,8 @@ BEGIN
     REPLACE(alt.key, 'guid_', '') AS alternate_id_type,
     ARRAY<DATETIME>[PARSE_DATETIME("%Y%m%d", MAX(event_date))] AS updated_date
   FROM `${ga4_project}.${ga4_dataset}.events_*`,
-    UNNEST(user_properties) email,
-    UNNEST(user_properties) alt
+    UNNEST(event_params) email,
+    UNNEST(event_params) alt
   LEFT JOIN
     `${project_id}.${dataset_id}.alternate_identity_match` AS alternate_identity_match
   ON

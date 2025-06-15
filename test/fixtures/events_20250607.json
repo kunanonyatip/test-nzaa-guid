@@ -4,7 +4,7 @@
     "event_timestamp": 1749312000000000,
     "event_name": "purchase",
     "user_pseudo_id": "1234567890.0987654321",
-    "user_properties": [
+    "event_params": [
       {
         "key": "guid_email",
         "value": {
@@ -25,14 +25,15 @@
           "set_timestamp_micros": 1749312000000000
         }
       }
-    ]
+    ],
+    "user_properties": []
   },
   {
     "event_date": "20250607",
     "event_timestamp": 1749312100000000,
     "event_name": "page_view",
     "user_pseudo_id": "4444444444.3333333333",
-    "user_properties": [
+    "event_params": [
       {
         "key": "guid_email",
         "value": {
@@ -53,6 +54,7 @@
           "set_timestamp_micros": 1749312100000000
         }
       }
-    ]
+    ],
+    "user_properties": []
   }
 ]

@@ -66,11 +66,11 @@ class TestUpdateIdentityMatch(TestCase):
         # load fixtures and initialise tables
         session_data = self.test_helper.initialise_table_from_fixture('events_20250606')
         
-        # Extract test data for assertions
+        # Extract test data for assertions (now from event_params instead of user_properties)
         first_record = session_data[0]
-        hashed_email = first_record['user_properties'][0]['value']['string_value']
+        hashed_email = first_record['event_params'][0]['value']['string_value']
         ga_id = first_record['user_pseudo_id']
-        fb_id = first_record['user_properties'][1]['value']['string_value'] if len(first_record['user_properties']) > 1 else None
+        fb_id = first_record['event_params'][1]['value']['string_value'] if len(first_record['event_params']) > 1 else None
         
         # CALL the stored procedure (not CREATE it again)
         call_procedure = f"CALL `{self.test_helper.project}.{self.test_helper.dataset}.update_identity_match`()"
@@ -121,12 +121,12 @@ class TestUpdateIdentityMatch(TestCase):
         date_result = list(self.test_helper.client.query(check_date_query).result())
         print(f"Last update date from procedure: {date_result[0].last_update_date}")
         
-        # Debug: Check events that would be processed
+        # Debug: Check events that would be processed (updated to use event_params)
         events_check_query = f"""
         SELECT 
             event_date,
             user_pseudo_id,
-            (SELECT value.string_value FROM UNNEST(user_properties) WHERE key = 'guid_email') as email
+            (SELECT value.string_value FROM UNNEST(event_params) WHERE key = 'guid_email') as email
         FROM `{self.test_helper.project}.{self.test_helper.dataset}.events_*`
         WHERE _TABLE_SUFFIX > '{date_result[0].last_update_date}'
         """
